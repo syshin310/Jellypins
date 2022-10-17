@@ -1,0 +1,111 @@
+plugins {
+    id 'com.android.library'
+    id 'kotlin-android'
+    id 'kotlin-kapt'
+    id 'dagger.hilt.android.plugin'
+    id 'kotlin-parcelize'
+}
+
+android {
+    compileSdk 32
+
+    defaultConfig {
+        minSdk 26
+        targetSdk 32
+
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        consumerProguardFiles "consumer-rules.pro"
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+    kotlinOptions {
+        jvmTarget = '1.8'
+    }
+
+    flavorDimensions (ProductFlavor.DEMENSION)
+    productFlavors {
+        live {
+            dimension (ProductFlavor.DEMENSION)
+            manifestPlaceholders = [
+                    appLabel: (ProductFlavor.LIVE_APP_LABEL)
+                    , appName: (ProductFlavor.LIVE_APP_NAME)
+            ]
+
+            buildConfigField "String", (ProductFlavor.FIELD_HOSTNAME), (ProductFlavor.LIVE_HOSTNAME_VALUE)
+            buildConfigField "String", (ProductFlavor.FIELD_CONTROLLER), (ProductFlavor.LIVE_CONTROLLER_VALUE)
+
+            buildConfigField "String", (ProductFlavor.FIELD_AWS_ACCESS_KEY), (ProductFlavor.LIVE_AWS_ACCESS_KEY_VALUE)
+            buildConfigField "String", (ProductFlavor.FIELD_AWS_SECRET_KEY), (ProductFlavor.LIVE_AWS_SECRET_KEY_VALUE)
+            buildConfigField "String", (ProductFlavor.FIELD_AWS_BUCKET), (ProductFlavor.LIVE_AWS_BUCKET_VALUE)
+            buildConfigField "String", (ProductFlavor.FIELD_AWS_CLOUD_FRONT), (ProductFlavor.LIVE_AWS_CLOUD_FRONT_VALUE)
+        }
+        dev {
+            dimension (ProductFlavor.DEMENSION)
+            manifestPlaceholders = [
+                    appLabel: (ProductFlavor.DEV_APP_LABEL)
+                    , appName: (ProductFlavor.DEV_APP_NAME)
+            ]
+
+            buildConfigField "String", (ProductFlavor.FIELD_HOSTNAME), (ProductFlavor.DEV_HOSTNAME_VALUE)
+            buildConfigField "String", (ProductFlavor.FIELD_CONTROLLER), (ProductFlavor.DEV_CONTROLLER_VALUE)
+
+            buildConfigField "String", (ProductFlavor.FIELD_AWS_ACCESS_KEY), (ProductFlavor.DEV_AWS_ACCESS_KEY_VALUE)
+            buildConfigField "String", (ProductFlavor.FIELD_AWS_SECRET_KEY), (ProductFlavor.DEV_AWS_SECRET_KEY_VALUE)
+            buildConfigField "String", (ProductFlavor.FIELD_AWS_BUCKET), (ProductFlavor.DEV_AWS_BUCKET_VALUE)
+            buildConfigField "String", (ProductFlavor.FIELD_AWS_CLOUD_FRONT), (ProductFlavor.DEV_AWS_CLOUD_FRONT_VALUE)
+        }
+    }
+}
+
+dependencies {
+    implementation project(':domain')
+
+    implementation (KTX.CORE)
+    implementation (AndroidX.APP_COMPAT)
+    implementation (Google.MATERIAL)
+    testImplementation 'junit:junit:4.13.2'
+    androidTestImplementation (AndroidTest.EXT_JUNIT)
+    androidTestImplementation (AndroidTest.ESPRESSO_CORE)
+
+    // Retrofit
+    implementation (Retrofit.RETROFIT)
+    implementation (Retrofit.CONVERTER_GSON)
+    implementation (Retrofit.CONVERTER_JAXB)
+
+    //okHttp
+    implementation (OkHttp.OKHTTP)
+    implementation (OkHttp.LOGGING_INTERCEPTOR)
+
+    //coroutines
+    implementation (Coroutines.COROUTINES)
+
+    // dagger hilt
+    implementation (DaggerHilt.DAGGER_HILT)
+    kapt (DaggerHilt.DAGGER_HILT_COMPILER)
+    implementation (DaggerHilt.DAGGER_HILT_VIEW_MODEL)
+    kapt (DaggerHilt.DAGGER_HILT_ANDROIDX_COMPILER)
+
+    // Room
+    implementation (Room.ROOM_RUNTIME)
+    implementation (Room.ROOM_RXJAVA2)
+    testImplementation (Room.ROOM_TESTING)
+    kapt (Room.ROOM_COMPILER)
+    implementation (Room.ROOM_KTX)
+
+    // MOSHI
+    implementation(MOSHI.MOSHI)
+
+    // AWS S3
+    implementation (AWS.AWS_COGNITO)
+    implementation (AWS.AWS_S3)
+    implementation (AWS.AWS_MOBILE_CLIENT)
+}

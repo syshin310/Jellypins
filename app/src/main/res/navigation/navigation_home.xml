@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/navigation_home"
+    app:startDestination="@id/firstFragment">
+
+    <fragment
+        android:id="@+id/firstFragment"
+        android:name="jellypins.org.view.fragments.home.FirstFragment"
+        android:label="fragment_first"
+        tools:layout="@layout/fragment_first" >
+        <action
+            android:id="@+id/action_firstFragment_to_secondFragment"
+            app:destination="@id/secondFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/secondFragment"
+        android:name="jellypins.org.view.fragments.home.SecondFragment"
+        android:label="fragment_second"
+        tools:layout="@layout/fragment_second" >
+        <action
+            app:popUpTo="@id/firstFragment"
+            android:id="@+id/action_secondFragment_to_thirdFragment"
+            app:destination="@id/thirdFragment" />
+
+        <argument
+            android:name="id"
+            app:argType="string" />
+    </fragment>
+    <fragment
+        android:id="@+id/thirdFragment"
+        android:name="jellypins.org.view.fragments.home.ThirdFragment"
+        android:label="fragment_third"
+        tools:layout="@layout/fragment_third">
+        <action
+            app:popUpTo="@id/secondFragment"
+            android:id="@+id/action_thirdFragment_to_fragmentDialog"
+            app:destination="@id/fragmentDialog" />
+    </fragment>
+    <dialog
+        android:id="@+id/fragmentDialog"
+        android:name="jellypins.org.view.dialogs.FragmentDialog"
+        tools:layout="@layout/fragment_dialog"/>
+</navigation>

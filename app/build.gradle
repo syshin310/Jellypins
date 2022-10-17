@@ -1,0 +1,134 @@
+plugins {
+    id 'com.android.application'
+    id 'kotlin-android'
+    id 'kotlin-kapt'
+    id 'dagger.hilt.android.plugin'
+    id 'androidx.navigation.safeargs.kotlin'
+}
+
+android {
+    compileSdk 32
+
+    defaultConfig {
+        applicationId 'jellypins.org'
+        minSdk 26
+        targetSdk 32
+        versionCode 1
+        versionName "1.0"
+
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+    kotlinOptions {
+        jvmTarget = '1.8'
+    }
+    viewBinding {
+        enabled = true
+    }
+    dataBinding {
+        enabled = true
+    }
+
+    flavorDimensions (ProductFlavor.DEMENSION)
+    productFlavors {
+        live {
+            dimension (ProductFlavor.DEMENSION)
+            manifestPlaceholders = [
+                    appLabel: (ProductFlavor.LIVE_APP_LABEL)
+                    , appName: (ProductFlavor.LIVE_APP_NAME)
+            ]
+            applicationIdSuffix (ProductFlavor.APPLICATION_ID_SUFFIX)
+
+            buildConfigField "String", (ProductFlavor.FIELD_HOSTNAME), (ProductFlavor.LIVE_HOSTNAME_VALUE)
+            buildConfigField "String", (ProductFlavor.FIELD_CONTROLLER), (ProductFlavor.LIVE_CONTROLLER_VALUE)
+        }
+        dev {
+            dimension (ProductFlavor.DEMENSION)
+            manifestPlaceholders = [
+                    appLabel: (ProductFlavor.DEV_APP_LABEL)
+                    , appName: (ProductFlavor.DEV_APP_NAME)
+            ]
+
+            buildConfigField "String", (ProductFlavor.FIELD_HOSTNAME), (ProductFlavor.DEV_HOSTNAME_VALUE)
+            buildConfigField "String", (ProductFlavor.FIELD_CONTROLLER), (ProductFlavor.DEV_CONTROLLER_VALUE)
+        }
+    }
+}
+
+dependencies {
+    implementation project(':data')
+    implementation project(':domain')
+
+    implementation (KTX.CORE)
+    implementation (AndroidX.APP_COMPAT)
+    implementation (Google.MATERIAL)
+    implementation (AndroidX.CONSTRAINTLAYOUT)
+    implementation 'com.google.android.gms:play-services-location:20.0.0'
+    testImplementation 'junit:junit:4.13.2'
+    androidTestImplementation (AndroidTest.EXT_JUNIT)
+    androidTestImplementation (AndroidTest.ESPRESSO_CORE)
+
+    // dagger hilt
+    implementation (DaggerHilt.DAGGER_HILT)
+    kapt (DaggerHilt.DAGGER_HILT_COMPILER)
+    implementation (DaggerHilt.DAGGER_HILT_VIEW_MODEL)
+    kapt (DaggerHilt.DAGGER_HILT_ANDROIDX_COMPILER)
+
+    // ViewModel
+    implementation (AndroidX.LIFECYCLE_VIEW_MODEL)
+
+    // LiveData
+    implementation (AndroidX.LIFECYCLE_LIVEDATA)
+
+    // Retrofit
+    implementation (Retrofit.RETROFIT)
+    implementation (Retrofit.CONVERTER_GSON)
+    implementation (Retrofit.CONVERTER_JAXB)
+
+    //okHttp
+    implementation (OkHttp.OKHTTP)
+    implementation (OkHttp.LOGGING_INTERCEPTOR)
+
+    //coroutines
+    implementation (Coroutines.COROUTINES)
+
+    //by viewModel
+    implementation (AndroidX.ACTIVITY)
+    implementation (AndroidX.FRAGMENT)
+
+    //nav component
+    implementation (NavComponent.NAVIGATION_FRAGMENT)
+    implementation (NavComponent.NAVIGATION_UI)
+    implementation (NavComponent.NAVIGATION_DYNAMIC_FEATURES_FRAGMENT)
+    androidTestImplementation (NavComponent.NAVIGATION_TESTING)
+    implementation (NavComponent.NAVIGATION_COMPOSE)
+
+    //datastore
+    implementation (AndroidX.DATASTORE)
+
+    // Room
+    implementation (Room.ROOM_RUNTIME)
+    implementation (Room.ROOM_RXJAVA2)
+    testImplementation (Room.ROOM_TESTING)
+    kapt (Room.ROOM_COMPILER)
+    implementation (Room.ROOM_KTX)
+
+    // AWS S3
+    implementation (AWS.AWS_COGNITO)
+    implementation (AWS.AWS_S3)
+    implementation (AWS.AWS_MOBILE_CLIENT)
+
+    // Glide
+    implementation (Glide.GLIDE)
+    kapt (Glide.GLIDE_COMPILER)
+}
